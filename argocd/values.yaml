@@ -1,0 +1,27 @@
+global:
+  domain: argocd.invest-iq.online
+
+configs:
+  params:
+    server.insecure: "true"
+
+server:
+  service:
+    type: LoadBalancer
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+      service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+  ingress:
+    enabled: false
+
+repoServer:
+  replicas: 1
+
+controller:
+  replicas: 1
+
+dex:
+  enabled: true
+
+notifications:
+  enabled: true
