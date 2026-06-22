@@ -1,10 +1,12 @@
-apiVersion: argoproj.io/v1alpha1
+﻿apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: planmyjourney-app-of-apps
+  name: dev-ai-service
   namespace: argocd
+  labels:
+    environment: dev
   annotations:
-    argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/sync-wave: "2"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -12,12 +14,15 @@ spec:
   source:
     repoURL: https://github.com/Plan-My-Journey/PlanMyJourney-Gitops
     targetRevision: main
-    path: argocd-apps/applications
-    directory:
-      recurse: true
+    path: helm-charts/ai-service
+    helm:
+      releaseName: ai-service
+      valueFiles:
+        - values.yaml
+        - values-dev.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: dev
   syncPolicy:
     automated:
       prune: true
@@ -25,3 +30,8 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas

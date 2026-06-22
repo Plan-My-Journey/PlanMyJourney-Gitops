@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kgateway
+  name: prod-kgateway
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "0"
+  labels:
+    environment: prod
 spec:
   project: planmyjourney
   source:
