@@ -32,8 +32,8 @@ if (-not $rdsHost) {
 
 # Alembic reads DATABASE_URL via ConfigParser, which treats % as interpolation syntax.
 $encodedPassword = [uri]::EscapeDataString($rds.password) -replace '%', '%%'
-$userDbUrl = "postgresql+psycopg://$($rds.username):${encodedPassword}@${rdsHost}:5432/ai_travel_prod"
-$travelDbUrl = $userDbUrl
+$userDbUrl = "postgresql+psycopg://$($rds.username):${encodedPassword}@${rdsHost}:5432/user_db"
+$travelDbUrl = "postgresql+psycopg://$($rds.username):${encodedPassword}@${rdsHost}:5432/travel_db"
 
 $openWeather = if ($thirdParty.OPENWEATHER_API_KEY) { $thirdParty.OPENWEATHER_API_KEY } else { "REPLACE_ME" }
 $geoapify = if ($thirdParty.GEOAPIFY_API_KEY) { $thirdParty.GEOAPIFY_API_KEY } else { "REPLACE_ME" }
