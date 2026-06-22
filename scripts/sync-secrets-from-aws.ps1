@@ -30,8 +30,10 @@ if (-not $rdsHost) {
   $rdsHost = (aws rds describe-db-instances --region $Region --query "DBInstances[0].Endpoint.Address" --output text)
 }
 
-$userDbUrl = "postgresql+psycopg://$($rds.username):$([uri]::EscapeDataString($rds.password))@${rdsHost}:5432/ai_travel_prod"
-$travelDbUrl = "postgresql+psycopg://$($rds.username):$([uri]::EscapeDataString($rds.password))@${rdsHost}:5432/ai_travel_prod"
+# Alembic reads DATABASE_URL via ConfigParser, which treats % as interpolation syntax.
+$encodedPassword = [uri]::EscapeDataString($rds.password) -replace '%', '%%'
+$userDbUrl = "postgresql+psycopg://$($rds.username):${encodedPassword}@${rdsHost}:5432/ai_travel_prod"
+$travelDbUrl = $userDbUrl
 
 $openWeather = if ($thirdParty.OPENWEATHER_API_KEY) { $thirdParty.OPENWEATHER_API_KEY } else { "REPLACE_ME" }
 $geoapify = if ($thirdParty.GEOAPIFY_API_KEY) { $thirdParty.GEOAPIFY_API_KEY } else { "REPLACE_ME" }
