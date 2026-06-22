@@ -23,7 +23,18 @@ function Ensure-Namespace($Ns) {
 Write-Host "Fetching AWS secrets (values not printed)..." -ForegroundColor Cyan
 $jwt = Get-AwsSecretPlain "$Project/jwt-secret/prod"
 $rds = Get-AwsSecretJson "$Project/rds/master-password/prod"
-$thirdParty = Get-AwsSecretJson "$Project/third-party-apis/prod"
+$geoapifySecret = Get-AwsSecretJson "$Project/third-party-apis/prod"
+$openWeather = "REPLACE_ME"
+try {
+  $openWeatherSecret = Get-AwsSecretJson "$Project/openweather-api-key/prod"
+  if ($openWeatherSecret.OPENWEATHER_API_KEY) {
+    $openWeather = $openWeatherSecret.OPENWEATHER_API_KEY
+  }
+} catch {
+  if ($geoapifySecret.OPENWEATHER_API_KEY) {
+    $openWeather = $geoapifySecret.OPENWEATHER_API_KEY
+  }
+}
 
 $rdsHost = (aws rds describe-db-instances --region $Region --query "DBInstances[?DBName=='ai_travel_prod'].Endpoint.Address" --output text)
 if (-not $rdsHost) {
@@ -35,8 +46,7 @@ $encodedPassword = [uri]::EscapeDataString($rds.password) -replace '%', '%%'
 $userDbUrl = "postgresql+psycopg://$($rds.username):${encodedPassword}@${rdsHost}:5432/user_db"
 $travelDbUrl = "postgresql+psycopg://$($rds.username):${encodedPassword}@${rdsHost}:5432/travel_db"
 
-$openWeather = if ($thirdParty.OPENWEATHER_API_KEY) { $thirdParty.OPENWEATHER_API_KEY } else { "REPLACE_ME" }
-$geoapify = if ($thirdParty.GEOAPIFY_API_KEY) { $thirdParty.GEOAPIFY_API_KEY } else { "REPLACE_ME" }
+$geoapify = if ($geoapifySecret.GEOAPIFY_API_KEY) { $geoapifySecret.GEOAPIFY_API_KEY } else { "REPLACE_ME" }
 
 foreach ($ns in @("prod", "dev")) {
   Ensure-Namespace $ns
@@ -70,8 +80,9 @@ foreach ($ns in @("prod", "dev")) {
 
 if ($openWeather -eq "REPLACE_ME" -or $geoapify -eq "REPLACE_ME") {
   Write-Host ""
-  Write-Host "WARNING: third-party API keys are still placeholders in AWS Secrets Manager." -ForegroundColor Yellow
-  Write-Host "Update: aws secretsmanager put-secret-value --secret-id ai-travel/third-party-apis/prod --secret-string '{...}'" -ForegroundColor Yellow
+  Write-Host "WARNING: API keys are still placeholders in AWS Secrets Manager." -ForegroundColor Yellow
+  Write-Host "Geoapify: ai-travel/third-party-apis/prod" -ForegroundColor Yellow
+  Write-Host "OpenWeather: ai-travel/openweather-api-key/prod" -ForegroundColor Yellow
 }
 
 Write-Host "Done. Restart deployments if pods were in CreateContainerConfigError." -ForegroundColor Green

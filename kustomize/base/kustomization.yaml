@@ -37,4 +37,4 @@ resources:
 
 commonLabels:
   app.kubernetes.io/part-of: planmyjourney
-  app.kubernetes.io/managed-by: flux
+  app.kubernetes.io/managed-by: argocd

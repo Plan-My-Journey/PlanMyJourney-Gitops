@@ -1,41 +1,53 @@
 # Plan My Journey — GitOps Repository
 
-Kubernetes manifests, Helm charts, Flux, ArgoCD, and KGateway configuration for the Plan My Journey platform.
+Kubernetes manifests and Helm charts for **ArgoCD** GitOps on EKS.
+
+Organization: [Plan-My-Journey](https://github.com/orgs/Plan-My-Journey)
 
 ## Structure
 
 ```
-├── argocd-apps/          # ArgoCD Application manifests (app-of-apps pattern)
-├── flux/prod/            # Flux GitRepository + Kustomization
-├── gateway/              # KGateway (Gateway API) — replaces NGINX Ingress
-├── helm-charts/          # Helm charts for all 5 services + frontend
-├── kustomize/            # Kustomize base + dev/prod overlays (Flux path)
-└── kubernetes/           # Plain K8s reference manifests
+argocd-apps/          # ArgoCD Application manifests (app-of-apps pattern)
+argocd/               # ArgoCD install script
+helm-charts/          # Helm charts for all microservices + frontend
+kustomize/            # Kustomize base + dev/prod overlays (reference / capstone layout)
+kubernetes/           # Plain K8s manifests for evaluation dry-run
+gateway/              # KGateway (Gateway API) configuration
 ```
 
-## Deployment Paths
+## GitOps Flow (ArgoCD)
 
-| Tool | Path | Namespace |
-|------|------|-----------|
-| **Flux** | `kustomize/overlays/prod` | `production` |
-| **ArgoCD** | `helm-charts/<service>` | `production` |
-| **KGateway** | `gateway/` | `gateway-system` |
+```
+CI builds image → pushes to ECR
+       ↓
+Deploy workflow updates helm-charts/*/values.yaml image tags
+       ↓
+git push to planmyjourney-gitops
+       ↓
+ArgoCD detects diff → auto-sync → EKS rollout
+```
 
-## Domains
+## Bootstrap ArgoCD
 
-- Frontend: https://invest-iq.online (CloudFront/S3)
-- API: https://api.invest-iq.online
-- Swagger: https://swagger.invest-iq.online
-- Grafana: https://grafana.invest-iq.online
+```bash
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl apply -f argocd-apps/projects/ai-travel.yaml
+kubectl apply -f argocd-apps/app-of-apps.yaml
+```
 
-## Post-Terraform Steps
+Or use `argocd/install.sh`.
 
-1. Update `kustomize/base/cognito/secret.yaml` with Terraform outputs
-2. Bootstrap Flux: `kubectl apply -f flux/prod/kustomization.yaml`
-3. Install ArgoCD and apply `argocd-apps/app-of-apps.yaml`
+## Validation
+
+```bash
+kubectl apply -f kubernetes/ --dry-run=client
+helm lint helm-charts/user-service --strict
+kustomize build kustomize/overlays/prod
+```
 
 ## Related Repositories
 
-- [PlanMyJourney-App](https://github.com/Plan-My-Journey/PlanMyJourney-App)
-- [PlanMyjourney-Terraform](https://github.com/Plan-My-Journey/PlanMyjourney-Terraform)
-- [PlanMyJourney-Workflows](https://github.com/Plan-My-Journey/PlanMyJourney-Workflows)
+- [planmyjourney-app](https://github.com/Plan-My-Journey/planmyjourney-app)
+- [planmyjourney-terraform](https://github.com/Plan-My-Journey/planmyjourney-terraform)
+- [planmyjourney-workflows](https://github.com/Plan-My-Journey/planmyjourney-workflows)
