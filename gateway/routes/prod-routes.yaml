@@ -9,7 +9,7 @@ spec:
   parentRefs:
     - name: api-gateway
       namespace: gateway-system
-      sectionName: https
+      sectionName: http
   hostnames:
     - invest-iq.online
     - www.invest-iq.online
@@ -31,7 +31,7 @@ spec:
   parentRefs:
     - name: api-gateway
       namespace: gateway-system
-      sectionName: https
+      sectionName: http
   hostnames:
     - api.invest-iq.online
   rules:
@@ -59,7 +59,7 @@ spec:
   parentRefs:
     - name: api-gateway
       namespace: gateway-system
-      sectionName: https
+      sectionName: http
   hostnames:
     - api.invest-iq.online
   rules:
@@ -87,7 +87,7 @@ spec:
   parentRefs:
     - name: api-gateway
       namespace: gateway-system
-      sectionName: https
+      sectionName: http
   hostnames:
     - api.invest-iq.online
   rules:
@@ -108,7 +108,7 @@ spec:
   parentRefs:
     - name: api-gateway
       namespace: gateway-system
-      sectionName: https
+      sectionName: http
   hostnames:
     - api.invest-iq.online
   rules:

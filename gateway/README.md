@@ -1,40 +1,39 @@
-# Envoy Gateway + NLB (KGateway Provider)
+# Gateway TLS with ACM + Route53
 
-Traffic enters through an **AWS Network Load Balancer** provisioned by **Envoy Gateway** (`gateway.envoyproxy.io` controller). Per-service **Ingress** resources are removed; routing uses **Gateway API HTTPRoute** objects.
+This gateway uses **AWS ACM** for TLS and **Route53** for DNS. cert-manager is not required.
 
-## Architecture
+## How TLS works
 
-```
-Internet → AWS NLB → Envoy Gateway → HTTPRoute → ClusterIP Services
-```
+1. ACM certificate (already in Terraform): `arn:aws:acm:us-east-1:235270183260:certificate/91b9e8c2-6c81-4e7c-819c-34fb260aa246`
+2. Envoy Gateway NLB annotations in `01-envoyproxy-nlb.yaml` terminate HTTPS on port 443.
+3. Traffic is forwarded to Envoy on HTTP port 80 inside the cluster.
+4. HTTPRoutes attach to the Gateway `http` listener (`sectionName: http`).
 
-| Component | Location |
-|-----------|----------|
-| Envoy Gateway controller | `envoy-gateway-system` |
-| Gateway + EnvoyProxy (NLB config) | `gateway-system` |
-| HTTPRoutes (prod) | `prod` namespace |
-| HTTPRoutes (dev) | `dev` namespace |
+## Route53 setup
 
-## ArgoCD apps (sync order)
-
-1. **prod-envoy-gateway** (wave 0) — installs Envoy Gateway Helm chart, creates GatewayClass `eg`
-2. **prod-gateway-routes** (wave 1) — NLB Gateway + HTTPRoutes for dev/prod
-
-## Manual install (alternative)
+After the Gateway NLB hostname is assigned:
 
 ```powershell
-.\gateway\install-envoy-gateway.ps1
-kubectl apply -k gateway/
+.\scripts\update-route53-gateway.ps1
 ```
 
-## Get NLB hostname
+This creates/updates alias records for:
+
+- `invest-iq.online`
+- `www.invest-iq.online`
+- `api.invest-iq.online`
+- `dev.invest-iq.online`
+- `dev-api.invest-iq.online`
+
+## Verify
 
 ```powershell
-kubectl get gateway api-gateway -n gateway-system -o jsonpath='{.status.addresses[0].value}'
+kubectl get gateway api-gateway -n gateway-system
+kubectl get httproute -A
+curl -I https://api.invest-iq.online/health
 ```
 
-Point DNS `api.invest-iq.online`, `invest-iq.online`, `dev-api.invest-iq.online`, `dev.invest-iq.online` to this NLB.
+## Notes
 
-## TLS
-
-TLS termination at the Gateway uses cert-manager (`gateway/03-certificate.yaml`). Install cert-manager before syncing routes if HTTPS is required.
+- Do not apply `03-certificate.yaml` (cert-manager). It is intentionally excluded from `kustomization.yaml`.
+- If you rotate the ACM certificate, update the annotation in `01-envoyproxy-nlb.yaml` and re-sync `prod-gateway-routes`.

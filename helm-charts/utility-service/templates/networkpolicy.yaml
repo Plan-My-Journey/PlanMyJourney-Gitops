@@ -32,7 +32,7 @@ spec:
           port: 53
         - protocol: TCP
           port: 53
-    # Allow outbound HTTPS to OpenWeather, Geoapify, Google Maps, and AWS APIs
+    # Allow outbound HTTPS to OpenWeather, Geoapify, and AWS APIs
     - ports:
         - protocol: TCP
           port: 443
