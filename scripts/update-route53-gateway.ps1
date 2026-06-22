@@ -1,9 +1,9 @@
 #Requires -Version 5.1
-# Create or update Route53 alias records for the Envoy Gateway NLB (ACM TLS terminates at NLB).
+# Update Route53 API records to the Envoy Gateway NLB.
+# Frontend apex/www stay on CloudFront — only api.* records are changed here.
 param(
   [string]$Domain = "invest-iq.online",
-  [string]$Region = "us-east-1",
-  [string]$GatewayNamespace = "envoy-gateway-system"
+  [string]$Region = "us-east-1"
 )
 
 $ErrorActionPreference = "Stop"
@@ -28,12 +28,10 @@ if (-not $zoneId -or $zoneId -eq "None") {
 }
 $zoneId = $zoneId -replace "/hostedzone/", ""
 
+# API traffic only — do NOT repoint apex/www (those use CloudFront).
 $records = @(
-  @{ Name = $Domain; Comment = "apex frontend" },
-  @{ Name = "www.$Domain"; Comment = "www frontend" },
-  @{ Name = "api.$Domain"; Comment = "prod API" },
-  @{ Name = "dev.$Domain"; Comment = "dev frontend" },
-  @{ Name = "dev-api.$Domain"; Comment = "dev API" }
+  @{ Name = "api.$Domain"; Comment = "prod API via Envoy NLB" },
+  @{ Name = "dev-api.$Domain"; Comment = "dev API via Envoy NLB" }
 )
 
 foreach ($record in $records) {
@@ -55,7 +53,7 @@ foreach ($record in $records) {
   } | ConvertTo-Json -Depth 6 -Compress
 
   aws route53 change-resource-record-sets --hosted-zone-id $zoneId --change-batch $changeBatch | Out-Null
-  Write-Host "UPSERT A alias: $($record.Name) -> $nlbDns" -ForegroundColor Green
+  Write-Host "UPSERT A alias: $($record.Name) -> $nlbDns ($($record.Comment))" -ForegroundColor Green
 }
 
-Write-Host "Route53 records updated. ACM cert must already be issued for $Domain and *.${Domain}." -ForegroundColor Cyan
+Write-Host "Done. Verify: nslookup api.$Domain" -ForegroundColor Cyan

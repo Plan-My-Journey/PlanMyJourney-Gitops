@@ -10,6 +10,9 @@ spec:
     - name: api-gateway
       namespace: gateway-system
       sectionName: http
+    - name: api-gateway
+      namespace: gateway-system
+      sectionName: https
   hostnames:
     - dev.invest-iq.online
   rules:
@@ -31,6 +34,9 @@ spec:
     - name: api-gateway
       namespace: gateway-system
       sectionName: http
+    - name: api-gateway
+      namespace: gateway-system
+      sectionName: https
   hostnames:
     - dev-api.invest-iq.online
   rules:
@@ -59,6 +65,9 @@ spec:
     - name: api-gateway
       namespace: gateway-system
       sectionName: http
+    - name: api-gateway
+      namespace: gateway-system
+      sectionName: https
   hostnames:
     - dev-api.invest-iq.online
   rules:
@@ -87,6 +96,9 @@ spec:
     - name: api-gateway
       namespace: gateway-system
       sectionName: http
+    - name: api-gateway
+      namespace: gateway-system
+      sectionName: https
   hostnames:
     - dev-api.invest-iq.online
   rules:
@@ -108,6 +120,9 @@ spec:
     - name: api-gateway
       namespace: gateway-system
       sectionName: http
+    - name: api-gateway
+      namespace: gateway-system
+      sectionName: https
   hostnames:
     - dev-api.invest-iq.online
   rules:

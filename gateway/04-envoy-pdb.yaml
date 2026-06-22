@@ -1,0 +1,15 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: api-gateway-envoy-pdb
+  namespace: envoy-gateway-system
+  labels:
+    app.kubernetes.io/part-of: planmyjourney
+    app.kubernetes.io/managed-by: argocd
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: envoy
+      gateway.envoyproxy.io/owning-gateway-name: api-gateway
+      gateway.envoyproxy.io/owning-gateway-namespace: gateway-system
