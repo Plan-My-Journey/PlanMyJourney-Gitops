@@ -6,6 +6,7 @@ resources:
   - 01-gatewayclass.yaml
   - 01-envoyproxy-nlb.yaml
   - 02-gateway.yaml
+  - 04-envoy-pdb.yaml
   # Requires cert-manager + ClusterIssuer letsencrypt-prod (install separately).
   # - 03-certificate.yaml
   - routes/prod-routes.yaml
