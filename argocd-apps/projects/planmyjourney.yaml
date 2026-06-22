@@ -11,6 +11,10 @@ spec:
     - https://charts.jetstack.io
     - https://kgateway.dev/kgateway
   destinations:
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+    - namespace: ai-travel
+      server: https://kubernetes.default.svc
     - namespace: production
       server: https://kubernetes.default.svc
     - namespace: gateway-system
