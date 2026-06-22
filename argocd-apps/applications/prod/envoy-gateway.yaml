@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prod-envoy-gateway
+  namespace: argocd
+  labels:
+    environment: prod
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  project: planmyjourney
+  source:
+    repoURL: https://github.com/envoyproxy/gateway
+    path: charts/gateway-helm
+    targetRevision: v1.2.4
+    helm:
+      releaseName: eg
+      values: |
+        config:
+          envoyGateway:
+            gateway:
+              controllerName: gateway.envoyproxy.io/gatewayclass-controller
+            provider:
+              type: Kubernetes
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: envoy-gateway-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

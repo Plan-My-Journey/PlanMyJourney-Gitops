@@ -24,12 +24,7 @@ configMap:
     CORS_ORIGINS: "https://dev.invest-iq.online,http://localhost:5173"
 
 ingress:
-  enabled: true
-  hosts:
-    - host: dev-api.invest-iq.online
-      paths:
-        - path: /api/utility
-          pathType: Prefix
+  enabled: false
 
 serviceAccount:
   annotations:

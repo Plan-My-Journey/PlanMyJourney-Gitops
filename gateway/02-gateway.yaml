@@ -5,8 +5,15 @@ metadata:
   namespace: gateway-system
   labels:
     app.kubernetes.io/part-of: planmyjourney
+    app.kubernetes.io/managed-by: argocd
 spec:
-  gatewayClassName: kgateway
+  gatewayClassName: eg
+  infrastructure:
+    parametersRef:
+      group: gateway.envoyproxy.io
+      kind: EnvoyProxy
+      name: nlb-config
+      namespace: gateway-system
   listeners:
     - name: http
       port: 80
