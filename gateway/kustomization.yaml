@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - 00-namespace.yaml
+  - 01-gatewayclass.yaml
   - 01-envoyproxy-nlb.yaml
   - 02-gateway.yaml
   # Requires cert-manager + ClusterIssuer letsencrypt-prod (install separately).
