@@ -7,11 +7,13 @@ spec:
   description: Plan My Journey dev and prod environments
   sourceRepos:
     - https://github.com/Plan-My-Journey/PlanMyJourney-Gitops
+    - https://github.com/envoyproxy/gateway
     - https://prometheus-community.github.io/helm-charts
     - https://charts.jetstack.io
-    - https://kgateway.dev/kgateway
   destinations:
     - namespace: argocd
+      server: https://kubernetes.default.svc
+    - namespace: envoy-gateway-system
       server: https://kubernetes.default.svc
     - namespace: prod
       server: https://kubernetes.default.svc

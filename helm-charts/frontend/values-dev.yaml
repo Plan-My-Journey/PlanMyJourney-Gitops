@@ -20,9 +20,4 @@ configMap:
     ENVIRONMENT: "dev"
 
 ingress:
-  enabled: true
-  hosts:
-    - host: dev.invest-iq.online
-      paths:
-        - path: /
-          pathType: Prefix
+  enabled: false

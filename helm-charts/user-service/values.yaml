@@ -33,27 +33,7 @@ service:
   targetPort: 8000
 
 ingress:
-  enabled: true
-  className: "alb"
-  annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/ssl-redirect: "443"
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:235270183260:certificate/91b9e8c2-6c81-4e7c-819c-34fb260aa246
-    alb.ingress.kubernetes.io/healthcheck-path: /health
-    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "30"
-    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "5"
-    alb.ingress.kubernetes.io/success-codes: "200"
-  hosts:
-    - host: api.invest-iq.online
-      paths:
-        - path: /api/auth
-          pathType: Prefix
-        - path: /api/users
-          pathType: Prefix
-  tls: []
+  enabled: false
 
 resources:
   requests:
@@ -131,7 +111,7 @@ nodeSelector: {}
 tolerations: []
 
 servicemonitor:
-  enabled: true
+  enabled: false
   interval: "30s"
   scrapeTimeout: "10s"
   path: /metrics

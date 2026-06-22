@@ -11,8 +11,8 @@ spec:
     - invest-iq.online
     - "*.invest-iq.online"
     - api.invest-iq.online
-    - swagger.invest-iq.online
-    - grafana.invest-iq.online
+    - dev.invest-iq.online
+    - dev-api.invest-iq.online
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
