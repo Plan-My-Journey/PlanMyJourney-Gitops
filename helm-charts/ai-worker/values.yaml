@@ -1,0 +1,69 @@
+replicaCount: 0
+
+image:
+  repository: "235270183260.dkr.ecr.us-east-1.amazonaws.com/ai-travel/ai-service"
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+serviceAccount:
+  create: true
+  name: ai-worker
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::235270183260:role/ai-travel-ai-worker-prod"
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+
+resources:
+  requests:
+    cpu: "250m"
+    memory: "512Mi"
+  limits:
+    cpu: "2000m"
+    memory: "2Gi"
+
+configMap:
+  enabled: true
+  data:
+    BEDROCK_MODEL_ID: "amazon.nova-pro-v1:0"
+    BEDROCK_REGION: "us-east-1"
+    LOG_LEVEL: "info"
+    ENVIRONMENT: "production"
+    WORKER_MODE: "true"
+    AWS_REGION: "us-east-1"
+    SQS_QUEUE_URL: "https://sqs.us-east-1.amazonaws.com/235270183260/ai-travel-prod-ai-jobs"
+    JOBS_TABLE_NAME: "ai-travel-prod-ai-jobs"
+    ASYNC_JOBS_ENABLED: "true"
+
+env:
+  - name: JWT_SECRET_KEY
+    valueFrom:
+      secretKeyRef:
+        name: ai-service-secrets
+        key: jwt_secret_key
+
+keda:
+  enabled: true
+  minReplicaCount: 0
+  maxReplicaCount: 10
+  pollingInterval: 15
+  cooldownPeriod: 120
+  queueLength: "5"
+  awsRegion: us-east-1
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+terminationGracePeriodSeconds: 120

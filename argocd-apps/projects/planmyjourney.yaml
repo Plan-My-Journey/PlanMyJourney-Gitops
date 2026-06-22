@@ -10,8 +10,14 @@ spec:
     - https://github.com/envoyproxy/gateway
     - https://prometheus-community.github.io/helm-charts
     - https://charts.jetstack.io
+    - https://kedacore.github.io/charts
+    - oci://public.ecr.aws/karpenter
   destinations:
     - namespace: argocd
+      server: https://kubernetes.default.svc
+    - namespace: keda
+      server: https://kubernetes.default.svc
+    - namespace: karpenter
       server: https://kubernetes.default.svc
     - namespace: envoy-gateway-system
       server: https://kubernetes.default.svc

@@ -26,6 +26,10 @@ configMap:
     LOG_LEVEL: "debug"
     ENVIRONMENT: "dev"
     CORS_ORIGINS: "https://dev.invest-iq.online,http://localhost:5173"
+    AWS_REGION: "us-east-1"
+    SQS_QUEUE_URL: "https://sqs.us-east-1.amazonaws.com/235270183260/ai-travel-prod-ai-jobs"
+    JOBS_TABLE_NAME: "ai-travel-prod-ai-jobs"
+    ASYNC_JOBS_ENABLED: "true"
 
 ingress:
   enabled: false
