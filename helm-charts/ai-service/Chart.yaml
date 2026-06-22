@@ -1,0 +1,15 @@
+apiVersion: v2
+name: ai-service
+description: AI-Travel ai-service — FastAPI service with AWS Bedrock Nova Pro
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+home: https://github.com/your-org/ai-travel-planner
+maintainers:
+  - name: Platform Team
+    email: platform@aitravel.com
+keywords:
+  - ai-travel
+  - ai-service
+  - fastapi
+  - bedrock
