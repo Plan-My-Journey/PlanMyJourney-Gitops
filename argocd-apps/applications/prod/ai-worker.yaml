@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prod-ai-worker
+  namespace: argocd
+  labels:
+    environment: prod
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  project: planmyjourney
+  source:
+    repoURL: https://github.com/Plan-My-Journey/PlanMyJourney-Gitops
+    targetRevision: main
+    path: helm-charts/ai-worker
+    helm:
+      releaseName: ai-worker
+      valueFiles:
+        - values.yaml
+        - values-prod.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prod
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
