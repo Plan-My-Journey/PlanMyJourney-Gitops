@@ -1,0 +1,40 @@
+replicaCount: 1
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+podDisruptionBudget:
+  enabled: false
+
+configMap:
+  enabled: true
+  data:
+    BEDROCK_MODEL_ID: "amazon.nova-pro-v1:0"
+    BEDROCK_REGION: "us-east-1"
+    LOG_LEVEL: "debug"
+    ENVIRONMENT: "dev"
+    CORS_ORIGINS: "https://dev.invest-iq.online,http://localhost:5173"
+
+ingress:
+  enabled: true
+  hosts:
+    - host: dev-api.invest-iq.online
+      paths:
+        - path: /api/ai
+          pathType: Prefix
+
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::235270183260:role/ai-travel-ai-service-prod"

@@ -1,8 +1,10 @@
 ﻿apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ai-service
+  name: dev-travel-service
   namespace: argocd
+  labels:
+    environment: dev
   annotations:
     argocd.argoproj.io/sync-wave: "2"
   finalizers:
@@ -12,15 +14,15 @@ spec:
   source:
     repoURL: https://github.com/Plan-My-Journey/PlanMyJourney-Gitops
     targetRevision: main
-    path: helm-charts/ai-service
+    path: helm-charts/travel-service
     helm:
-      releaseName: ai-service
+      releaseName: travel-service
       valueFiles:
         - values.yaml
-        - values-prod.yaml
+        - values-dev.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: ai-travel
+    namespace: dev
   syncPolicy:
     automated:
       prune: true

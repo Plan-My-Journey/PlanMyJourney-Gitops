@@ -4,7 +4,7 @@ metadata:
   name: planmyjourney
   namespace: argocd
 spec:
-  description: Plan My Journey production workloads
+  description: Plan My Journey dev and prod environments
   sourceRepos:
     - https://github.com/Plan-My-Journey/PlanMyJourney-Gitops
     - https://prometheus-community.github.io/helm-charts
@@ -13,9 +13,9 @@ spec:
   destinations:
     - namespace: argocd
       server: https://kubernetes.default.svc
-    - namespace: ai-travel
+    - namespace: prod
       server: https://kubernetes.default.svc
-    - namespace: production
+    - namespace: dev
       server: https://kubernetes.default.svc
     - namespace: gateway-system
       server: https://kubernetes.default.svc

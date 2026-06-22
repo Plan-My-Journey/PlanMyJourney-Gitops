@@ -1,8 +1,10 @@
 ﻿apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: utility-service
+  name: prod-utility-service
   namespace: argocd
+  labels:
+    environment: prod
   annotations:
     argocd.argoproj.io/sync-wave: "2"
   finalizers:
@@ -20,7 +22,7 @@ spec:
         - values-prod.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: ai-travel
+    namespace: prod
   syncPolicy:
     automated:
       prune: true
