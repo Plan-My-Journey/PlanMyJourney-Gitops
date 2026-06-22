@@ -7,3 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: argocd
 spec:
   controllerName: gateway.envoyproxy.io/gatewayclass-controller
+  parametersRef:
+    group: gateway.envoyproxy.io
+    kind: EnvoyProxy
+    name: nlb-config
+    namespace: gateway-system
