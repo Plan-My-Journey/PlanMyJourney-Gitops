@@ -1,37 +1,41 @@
-# Plan My Journey — GitOps
+# Plan My Journey — GitOps Repository
 
-Declarative Kubernetes deployments using **Flux CD** (AWS CodeConnections + EKS GitOps).
-
-Organization: [Plan-My-Journey](https://github.com/orgs/Plan-My-Journey)
+Kubernetes manifests, Helm charts, Flux, ArgoCD, and KGateway configuration for the Plan My Journey platform.
 
 ## Structure
 
 ```
-helm-charts/          # Helm charts per microservice
-kustomize/
-  base/               # Namespace, RBAC, probes, HPA, PDB, NetworkPolicy
-  overlays/dev/       # Dev environment patches
-  overlays/prod/      # Production patches
-kubernetes/           # Capstone evaluation manifest layout
-flux/prod/            # Flux GitRepository + Kustomization
+├── argocd-apps/          # ArgoCD Application manifests (app-of-apps pattern)
+├── flux/prod/            # Flux GitRepository + Kustomization
+├── gateway/              # KGateway (Gateway API) — replaces NGINX Ingress
+├── helm-charts/          # Helm charts for all 5 services + frontend
+├── kustomize/            # Kustomize base + dev/prod overlays (Flux path)
+└── kubernetes/           # Plain K8s reference manifests
 ```
 
-## Validation
+## Deployment Paths
 
-```bash
-kubectl apply -f kubernetes/ --dry-run=client
-kustomize build kustomize/overlays/dev
-kustomize build kustomize/overlays/prod
-helm lint helm-charts/user-service --strict
-```
+| Tool | Path | Namespace |
+|------|------|-----------|
+| **Flux** | `kustomize/overlays/prod` | `production` |
+| **ArgoCD** | `helm-charts/<service>` | `production` |
+| **KGateway** | `gateway/` | `gateway-system` |
 
-## GitOps Flow
+## Domains
 
-1. CI pushes images to ECR
-2. Deploy workflow updates image tags in this repo
-3. Flux reconciles `kustomize/overlays/prod` every 5 minutes
-4. Kubernetes rolls out with HPA/PDB/NetworkPolicy
+- Frontend: https://invest-iq.online (CloudFront/S3)
+- API: https://api.invest-iq.online
+- Swagger: https://swagger.invest-iq.online
+- Grafana: https://grafana.invest-iq.online
 
-## Migration from ArgoCD
+## Post-Terraform Steps
 
-ArgoCD manifests in `argocd-apps/` are retained for reference only. Production GitOps uses AWS-managed Flux via CodeConnections.
+1. Update `kustomize/base/cognito/secret.yaml` with Terraform outputs
+2. Bootstrap Flux: `kubectl apply -f flux/prod/kustomization.yaml`
+3. Install ArgoCD and apply `argocd-apps/app-of-apps.yaml`
+
+## Related Repositories
+
+- [PlanMyJourney-App](https://github.com/Plan-My-Journey/PlanMyJourney-App)
+- [PlanMyjourney-Terraform](https://github.com/Plan-My-Journey/PlanMyjourney-Terraform)
+- [PlanMyJourney-Workflows](https://github.com/Plan-My-Journey/PlanMyJourney-Workflows)
