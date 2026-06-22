@@ -1,0 +1,10 @@
+# Evaluation-ready Kubernetes manifests (capstone checklist layout)
+# Apply: kubectl apply -f kubernetes/ --dry-run=client
+# Namespace: production
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: production
+  labels:
+    environment: production

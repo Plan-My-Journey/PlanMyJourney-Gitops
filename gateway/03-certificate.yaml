@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: api-gateway-cert
+  namespace: gateway-system
+spec:
+  secretName: api-gateway-tls
+  duration: 2160h
+  renewBefore: 360h
+  dnsNames:
+    - invest-iq.online
+    - "*.invest-iq.online"
+    - api.invest-iq.online
+    - swagger.invest-iq.online
+    - grafana.invest-iq.online
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer

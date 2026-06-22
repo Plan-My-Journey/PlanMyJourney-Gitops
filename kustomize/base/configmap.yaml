@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-service-config
+  namespace: production
+data:
+  LOG_LEVEL: "info"
+  ENVIRONMENT: "production"
+  CORS_ORIGINS: "https://invest-iq.online,https://www.invest-iq.online"

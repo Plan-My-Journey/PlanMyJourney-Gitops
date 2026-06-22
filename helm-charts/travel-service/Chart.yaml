@@ -1,0 +1,15 @@
+apiVersion: v2
+name: travel-service
+description: AI-Travel travel-service — FastAPI service for trips and expenses with PostgreSQL
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+home: https://github.com/your-org/ai-travel-planner
+maintainers:
+  - name: Platform Team
+    email: platform@aitravel.com
+keywords:
+  - ai-travel
+  - travel-service
+  - fastapi
+  - postgresql

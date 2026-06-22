@@ -1,0 +1,11 @@
+{{- if .Values.configMap.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "utility-service.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "utility-service.labels" . | nindent 4 }}
+data:
+  {{- toYaml .Values.configMap.data | nindent 2 }}
+{{- end }}

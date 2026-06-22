@@ -1,0 +1,17 @@
+apiVersion: v2
+name: user-service
+description: AI-Travel user-service — FastAPI service for authentication and user management with PostgreSQL
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+home: https://github.com/your-org/ai-travel-planner
+maintainers:
+  - name: Platform Team
+    email: platform@aitravel.com
+keywords:
+  - ai-travel
+  - user-service
+  - fastapi
+  - postgresql
+  - auth
+  - jwt
