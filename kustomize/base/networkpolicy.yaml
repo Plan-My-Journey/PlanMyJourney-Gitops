@@ -14,7 +14,7 @@ spec:
     - from:
         - namespaceSelector:
             matchLabels:
-              name: gateway-system
+              name: kgateway-system
       ports:
         - protocol: TCP
           port: 8000

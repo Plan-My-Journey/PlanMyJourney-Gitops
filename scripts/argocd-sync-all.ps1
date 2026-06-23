@@ -14,18 +14,15 @@ function Sync-App($Name) {
 }
 
 Write-Host "==> Step 1: AppProject" -ForegroundColor Cyan
-& $kubectl apply -f "D:\downloads\AI-Travel-Planner-Microservices-main\planmyjourney-gitops\argocd-apps\projects\planmyjourney.yaml"
+& $kubectl apply -f "$PSScriptRoot\..\argocd-apps\projects\planmyjourney.yaml"
 
 Write-Host "==> Step 2: Secrets from AWS" -ForegroundColor Cyan
-& "D:\downloads\AI-Travel-Planner-Microservices-main\planmyjourney-gitops\scripts\sync-secrets-from-aws.ps1"
+& "$PSScriptRoot\sync-secrets-from-aws.ps1"
 
-Write-Host "==> Step 3: Envoy Gateway controller" -ForegroundColor Cyan
-helm repo add envoy https://github.com/envoyproxy/gateway 2>$null
-helm upgrade --install eg oci://docker.io/envoyproxy/gateway-helm --version v1.2.4 --namespace envoy-gateway-system --create-namespace --wait --timeout 8m 2>&1 | Select-Object -Last 5
-
-Write-Host "==> Step 4: ArgoCD sync order" -ForegroundColor Cyan
+Write-Host "==> Step 3: ArgoCD sync order" -ForegroundColor Cyan
 Sync-App "planmyjourney-app-of-apps"
-Sync-App "prod-envoy-gateway"
+Sync-App "platform-kgateway-crds"
+Sync-App "platform-kgateway"
 Sync-App "prod-gateway-routes"
 
 $services = @('prod-frontend','prod-ai-service','prod-user-service','prod-travel-service','prod-utility-service',
@@ -35,5 +32,10 @@ foreach ($app in $services) { Sync-App $app }
 Write-Host ""
 Write-Host "==> Final status" -ForegroundColor Cyan
 & $kubectl get applications -n argocd -o custom-columns=NAME:.metadata.name,SYNC:.status.sync.status,HEALTH:.status.health.status
+& $kubectl get pods -n kgateway-system
+& $kubectl get gateway api-gateway -n kgateway-system
 & $kubectl get pods -n prod
 & $kubectl get pods -n dev
+
+Write-Host ""
+Write-Host "After gateway is healthy, run: .\scripts\update-route53-gateway.ps1" -ForegroundColor Yellow

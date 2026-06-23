@@ -1,39 +1,62 @@
-# Gateway TLS with ACM + Route53
+# KGateway (Gateway API)
 
-This gateway uses **AWS ACM** for TLS and **Route53** for DNS. cert-manager is not required.
+Open-source [KGateway v2.3.4](https://kgateway.dev) replaces the former Envoy Gateway controller.
 
-## How TLS works
+## Architecture
 
-1. ACM certificate (already in Terraform): `arn:aws:acm:us-east-1:235270183260:certificate/91b9e8c2-6c81-4e7c-819c-34fb260aa246`
-2. Envoy Gateway NLB annotations in `01-envoyproxy-nlb.yaml` terminate HTTPS on port 443.
-3. Traffic is forwarded to Envoy on HTTP port 80 inside the cluster.
-4. HTTPRoutes attach to the Gateway `http` listener (`sectionName: http`).
+```
+Route53 (api.invest-iq.online)
+    ↓
+AWS NLB (ACM TLS :443)
+    ↓ HTTP :80
+KGateway proxy (kgateway-system)
+    ↓ HTTPRoute
+prod/dev microservices
+```
 
-## Route53 setup
+Frontend traffic uses **CloudFront → S3** only (no HTTPRoute for apex/www).
 
-After the Gateway NLB hostname is assigned:
+## Files
+
+| File | Purpose |
+|------|---------|
+| `00-namespace.yaml` | `kgateway-system` namespace |
+| `01-gateway-parameters-nlb.yaml` | NLB + ACM annotations, 3 replicas |
+| `02-gateway.yaml` | `Gateway` (`api-gateway`) |
+| `03-gateway-pdb.yaml` | HA disruption budget |
+| `routes/prod-routes.yaml` | Production API HTTPRoutes |
+| `routes/dev-routes.yaml` | Development API HTTPRoutes |
+
+## ArgoCD
+
+| Application | Wave | Purpose |
+|-------------|------|---------|
+| `platform-kgateway-crds` | -3 | KGateway CRDs |
+| `platform-kgateway` | -2 | KGateway controller |
+| `prod-gateway-routes` | 1 | Gateway + HTTPRoutes |
+
+## Operations
 
 ```powershell
+# After sync, point API DNS to the new NLB
 .\scripts\update-route53-gateway.ps1
+
+# Verify
+kubectl get gateway api-gateway -n kgateway-system
+kubectl get httproute -A
+kubectl get pods -n kgateway-system
 ```
 
-This creates/updates alias records for:
+## ACM rotation
 
-- `invest-iq.online`
-- `www.invest-iq.online`
-- `api.invest-iq.online`
-- `dev.invest-iq.online`
-- `dev-api.invest-iq.online`
+Update `service.beta.kubernetes.io/aws-load-balancer-ssl-cert` in `01-gateway-parameters-nlb.yaml`, then sync `prod-gateway-routes`.
 
-## Verify
+## Legacy cleanup
+
+After KGateway is healthy and Route53 is updated:
 
 ```powershell
-kubectl get gateway api-gateway -n gateway-system
-kubectl get httproute -A
-curl -I https://api.invest-iq.online/health
+.\scripts\cleanup-legacy-ingress.ps1
 ```
 
-## Notes
-
-- Do not apply `03-certificate.yaml` (cert-manager). It is intentionally excluded from `kustomization.yaml`.
-- If you rotate the ACM certificate, update the annotation in `01-envoyproxy-nlb.yaml` and re-sync `prod-gateway-routes`.
+See `MIGRATION-REPORT.md` for full migration details and rollback.

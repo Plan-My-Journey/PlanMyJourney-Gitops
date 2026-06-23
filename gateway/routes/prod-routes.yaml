@@ -1,29 +1,4 @@
-# Production HTTPRoutes — routed via Envoy Gateway (KGateway provider) + AWS NLB
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: prod-frontend-route
-  namespace: prod
-spec:
-  parentRefs:
-    - name: api-gateway
-      namespace: gateway-system
-      sectionName: http
-    - name: api-gateway
-      namespace: gateway-system
-      sectionName: https
-  hostnames:
-    - invest-iq.online
-    - www.invest-iq.online
-  rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
-        - name: frontend
-          port: 80
+# Production HTTPRoutes — KGateway + AWS NLB (ACM TLS at NLB)
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -33,11 +8,8 @@ metadata:
 spec:
   parentRefs:
     - name: api-gateway
-      namespace: gateway-system
+      namespace: kgateway-system
       sectionName: http
-    - name: api-gateway
-      namespace: gateway-system
-      sectionName: https
   hostnames:
     - api.invest-iq.online
   rules:
@@ -64,11 +36,8 @@ metadata:
 spec:
   parentRefs:
     - name: api-gateway
-      namespace: gateway-system
+      namespace: kgateway-system
       sectionName: http
-    - name: api-gateway
-      namespace: gateway-system
-      sectionName: https
   hostnames:
     - api.invest-iq.online
   rules:
@@ -95,11 +64,8 @@ metadata:
 spec:
   parentRefs:
     - name: api-gateway
-      namespace: gateway-system
+      namespace: kgateway-system
       sectionName: http
-    - name: api-gateway
-      namespace: gateway-system
-      sectionName: https
   hostnames:
     - api.invest-iq.online
   rules:
@@ -119,11 +85,8 @@ metadata:
 spec:
   parentRefs:
     - name: api-gateway
-      namespace: gateway-system
+      namespace: kgateway-system
       sectionName: http
-    - name: api-gateway
-      namespace: gateway-system
-      sectionName: https
   hostnames:
     - api.invest-iq.online
   rules:
