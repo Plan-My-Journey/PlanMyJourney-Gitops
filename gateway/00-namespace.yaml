@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: gateway-system
+  name: kgateway-system
   labels:
-    name: gateway-system
+    name: kgateway-system
     app.kubernetes.io/part-of: planmyjourney

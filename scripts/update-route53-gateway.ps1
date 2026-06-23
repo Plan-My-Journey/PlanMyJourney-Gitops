@@ -1,6 +1,6 @@
 #Requires -Version 5.1
-# Update Route53 API records to the Envoy Gateway NLB.
-# Frontend apex/www stay on CloudFront — only api.* records are changed here.
+# Update Route53 API records to the KGateway NLB.
+# Frontend apex/www remain on CloudFront — only api.* records are updated.
 param(
   [string]$Domain = "invest-iq.online",
   [string]$Region = "us-east-1"
@@ -10,10 +10,10 @@ $ErrorActionPreference = "Stop"
 $kubectl = Join-Path $env:USERPROFILE ".local\bin\kubectl.exe"
 if (-not (Test-Path $kubectl)) { $kubectl = "kubectl" }
 
-Write-Host "Reading Gateway NLB hostname..." -ForegroundColor Cyan
-$nlbDns = & $kubectl get gateway api-gateway -n gateway-system -o jsonpath='{.status.addresses[0].value}' 2>$null
+Write-Host "Reading KGateway NLB hostname..." -ForegroundColor Cyan
+$nlbDns = & $kubectl get gateway api-gateway -n kgateway-system -o jsonpath='{.status.addresses[0].value}' 2>$null
 if (-not $nlbDns) {
-  throw "Gateway address not ready. Check: kubectl get gateway api-gateway -n gateway-system"
+  throw "Gateway address not ready. Check: kubectl get gateway api-gateway -n kgateway-system"
 }
 
 Write-Host "NLB hostname: $nlbDns" -ForegroundColor Green
@@ -28,10 +28,9 @@ if (-not $zoneId -or $zoneId -eq "None") {
 }
 $zoneId = $zoneId -replace "/hostedzone/", ""
 
-# API traffic only — do NOT repoint apex/www (those use CloudFront).
 $records = @(
-  @{ Name = "api.$Domain"; Comment = "prod API via Envoy NLB" },
-  @{ Name = "dev-api.$Domain"; Comment = "dev API via Envoy NLB" }
+  @{ Name = "api.$Domain"; Comment = "prod API via KGateway NLB" },
+  @{ Name = "dev-api.$Domain"; Comment = "dev API via KGateway NLB" }
 )
 
 foreach ($record in $records) {
