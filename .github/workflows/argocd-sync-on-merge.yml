@@ -72,7 +72,7 @@ jobs:
       - name: Sync production ArgoCD applications
         if: steps.charts.outputs.apps != ''
         env:
-          ARGOCD_SERVER: ${{ vars.ARGOCD_SERVER }}
+          ARGOCD_SERVER: ${{ vars.ARGOCD_SERVER || 'argocd.invest-iq.online' }}
           ARGOCD_AUTH_TOKEN: ${{ secrets.ARGOCD_AUTH_TOKEN }}
           APPS: ${{ steps.charts.outputs.apps }}
         run: |
