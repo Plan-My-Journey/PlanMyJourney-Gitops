@@ -29,3 +29,6 @@ ingress:
 serviceAccount:
   annotations:
     eks.amazonaws.com/role-arn: "arn:aws:iam::235270183260:role/ai-travel-user-service-prod"
+
+image:
+  tag: "sha-f795c1aa3d85735a217ebd47c94502198f724378"
