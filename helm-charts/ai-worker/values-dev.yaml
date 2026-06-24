@@ -11,3 +11,6 @@ keda:
 serviceAccount:
   annotations:
     eks.amazonaws.com/role-arn: "arn:aws:iam::235270183260:role/ai-travel-ai-worker-prod"
+
+image:
+  tag: "sha-f8802eeb4d5cea16d476e43ed81acfa4c536516c"
