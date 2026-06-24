@@ -1,5 +1,4 @@
 replicaCount: 1
-
 resources:
   requests:
     cpu: "100m"
@@ -7,28 +6,22 @@ resources:
   limits:
     cpu: "500m"
     memory: "512Mi"
-
 autoscaling:
   enabled: true
   minReplicas: 1
   maxReplicas: 3
-
 podDisruptionBudget:
   enabled: false
-
 configMap:
   enabled: true
   data:
     LOG_LEVEL: "debug"
     ENVIRONMENT: "dev"
     CORS_ORIGINS: "https://dev.invest-iq.online,http://localhost:5173"
-
 ingress:
   enabled: false
-
 serviceAccount:
   annotations:
     eks.amazonaws.com/role-arn: "arn:aws:iam::235270183260:role/ai-travel-utility-service-prod"
-
 image:
-  tag: "sha-f8802eeb4d5cea16d476e43ed81acfa4c536516c"
+  tag: "sha-f795c1aa3d85735a217ebd47c94502198f724378"
