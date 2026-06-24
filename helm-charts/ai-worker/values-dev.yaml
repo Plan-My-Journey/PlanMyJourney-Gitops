@@ -3,14 +3,11 @@ configMap:
     ENVIRONMENT: "dev"
     SQS_QUEUE_URL: "https://sqs.us-east-1.amazonaws.com/235270183260/ai-travel-prod-ai-jobs"
     JOBS_TABLE_NAME: "ai-travel-prod-ai-jobs"
-
 keda:
   maxReplicaCount: 5
   queueLength: "5"
-
 serviceAccount:
   annotations:
     eks.amazonaws.com/role-arn: "arn:aws:iam::235270183260:role/ai-travel-ai-worker-prod"
-
 image:
-  tag: "sha-f8802eeb4d5cea16d476e43ed81acfa4c536516c"
+  tag: "sha-6b190414e41760227ee03c2f7a814de69747bf17"
