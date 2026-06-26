@@ -20,6 +20,11 @@ spec:
           aws:
             irsa:
               enabled: true
+        # IRSA so the KEDA operator can read SQS queue depth (aws-sqs-queue scaler)
+        serviceAccount:
+          operator:
+            annotations:
+              eks.amazonaws.com/role-arn: arn:aws:iam::235270183260:role/ai-travel-keda-operator-prod
         resources:
           operator:
             requests:

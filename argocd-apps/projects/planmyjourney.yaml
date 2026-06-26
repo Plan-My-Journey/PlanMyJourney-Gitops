@@ -11,6 +11,7 @@ spec:
     - cr.kgateway.dev/kgateway-dev/charts
     - public.ecr.aws/karpenter
     - https://kedacore.github.io/charts
+    - https://kubernetes-sigs.github.io/metrics-server/
     - https://prometheus-community.github.io/helm-charts
     - https://charts.jetstack.io
   destinations:
