@@ -17,12 +17,12 @@ spec:
       filters:
         - type: URLRewrite
           urlRewrite: { path: { type: ReplacePrefixMatch, replacePrefixMatch: /auth } }
-      backendRefs: [{ name: user-service, port: 8000 }]
+      backendRefs: [{ name: user-service, port: 8000, group: "", kind: Service, weight: 1 }]
     - matches: [{ path: { type: PathPrefix, value: /api/users } }]
       filters:
         - type: URLRewrite
           urlRewrite: { path: { type: ReplacePrefixMatch, replacePrefixMatch: /users } }
-      backendRefs: [{ name: user-service, port: 8000 }]
+      backendRefs: [{ name: user-service, port: 8000, group: "", kind: Service, weight: 1 }]
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -40,17 +40,17 @@ spec:
       filters:
         - type: URLRewrite
           urlRewrite: { path: { type: ReplacePrefixMatch, replacePrefixMatch: /trips } }
-      backendRefs: [{ name: travel-service, port: 8000 }]
+      backendRefs: [{ name: travel-service, port: 8000, group: "", kind: Service, weight: 1 }]
     - matches: [{ path: { type: PathPrefix, value: /api/expenses } }]
       filters:
         - type: URLRewrite
           urlRewrite: { path: { type: ReplacePrefixMatch, replacePrefixMatch: /expenses } }
-      backendRefs: [{ name: travel-service, port: 8000 }]
+      backendRefs: [{ name: travel-service, port: 8000, group: "", kind: Service, weight: 1 }]
     - matches: [{ path: { type: PathPrefix, value: /api/trip-history } }]
       filters:
         - type: URLRewrite
           urlRewrite: { path: { type: ReplacePrefixMatch, replacePrefixMatch: /trip-history } }
-      backendRefs: [{ name: travel-service, port: 8000 }]
+      backendRefs: [{ name: travel-service, port: 8000, group: "", kind: Service, weight: 1 }]
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -68,7 +68,7 @@ spec:
       filters:
         - type: URLRewrite
           urlRewrite: { path: { type: ReplacePrefixMatch, replacePrefixMatch: /ai } }
-      backendRefs: [{ name: ai-service, port: 8000 }]
+      backendRefs: [{ name: ai-service, port: 8000, group: "", kind: Service, weight: 1 }]
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -86,24 +86,24 @@ spec:
       filters:
         - type: URLRewrite
           urlRewrite: { path: { type: ReplacePrefixMatch, replacePrefixMatch: /weather } }
-      backendRefs: [{ name: utility-service, port: 8000 }]
+      backendRefs: [{ name: utility-service, port: 8000, group: "", kind: Service, weight: 1 }]
     - matches: [{ path: { type: PathPrefix, value: /api/hotels } }]
       filters:
         - type: URLRewrite
           urlRewrite: { path: { type: ReplacePrefixMatch, replacePrefixMatch: /hotels } }
-      backendRefs: [{ name: utility-service, port: 8000 }]
+      backendRefs: [{ name: utility-service, port: 8000, group: "", kind: Service, weight: 1 }]
     - matches: [{ path: { type: PathPrefix, value: /api/places } }]
       filters:
         - type: URLRewrite
           urlRewrite: { path: { type: ReplacePrefixMatch, replacePrefixMatch: /places } }
-      backendRefs: [{ name: utility-service, port: 8000 }]
+      backendRefs: [{ name: utility-service, port: 8000, group: "", kind: Service, weight: 1 }]
     - matches: [{ path: { type: PathPrefix, value: /api/geocode } }]
       filters:
         - type: URLRewrite
           urlRewrite: { path: { type: ReplacePrefixMatch, replacePrefixMatch: /geocode } }
-      backendRefs: [{ name: utility-service, port: 8000 }]
+      backendRefs: [{ name: utility-service, port: 8000, group: "", kind: Service, weight: 1 }]
     - matches: [{ path: { type: PathPrefix, value: /api/routing } }]
       filters:
         - type: URLRewrite
           urlRewrite: { path: { type: ReplacePrefixMatch, replacePrefixMatch: /routing } }
-      backendRefs: [{ name: utility-service, port: 8000 }]
+      backendRefs: [{ name: utility-service, port: 8000, group: "", kind: Service, weight: 1 }]
