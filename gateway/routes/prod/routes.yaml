@@ -14,12 +14,6 @@ spec:
     - name: api-gateway
       namespace: kgateway-system
       sectionName: http
-    - name: api-gateway
-      namespace: gateway-system
-      sectionName: http
-    - name: api-gateway
-      namespace: gateway-system
-      sectionName: https
   hostnames: ["api.invest-iq.online"]
   rules:
     - matches: [{ path: { type: PathPrefix, value: /api/auth } }]
@@ -43,12 +37,6 @@ spec:
     - name: api-gateway
       namespace: kgateway-system
       sectionName: http
-    - name: api-gateway
-      namespace: gateway-system
-      sectionName: http
-    - name: api-gateway
-      namespace: gateway-system
-      sectionName: https
   hostnames: ["api.invest-iq.online"]
   rules:
     - matches: [{ path: { type: PathPrefix, value: /api/trips } }]
@@ -77,12 +65,6 @@ spec:
     - name: api-gateway
       namespace: kgateway-system
       sectionName: http
-    - name: api-gateway
-      namespace: gateway-system
-      sectionName: http
-    - name: api-gateway
-      namespace: gateway-system
-      sectionName: https
   hostnames: ["api.invest-iq.online"]
   rules:
     - matches: [{ path: { type: PathPrefix, value: /api/ai } }]
@@ -101,12 +83,6 @@ spec:
     - name: api-gateway
       namespace: kgateway-system
       sectionName: http
-    - name: api-gateway
-      namespace: gateway-system
-      sectionName: http
-    - name: api-gateway
-      namespace: gateway-system
-      sectionName: https
   hostnames: ["api.invest-iq.online"]
   rules:
     - matches: [{ path: { type: PathPrefix, value: /api/weather } }]
