@@ -12,10 +12,10 @@ spec:
   source:
     repoURL: https://github.com/Plan-My-Journey/PlanMyJourney-Gitops
     targetRevision: main
-    path: gateway
+    path: gateway/routes/prod
   destination:
     server: https://kubernetes.default.svc
-    namespace: kgateway-system
+    namespace: prod
   syncPolicy:
     automated:
       prune: true

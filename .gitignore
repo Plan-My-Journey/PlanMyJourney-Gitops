@@ -2,55 +2,11 @@
 .env
 .env.*
 !.env.example
-!.env.production.example
-!**/.env.example
-!**/.env.production.example
-scripts/lambda-env.json
-scripts/finops-lambda-env-update.json
-
-# Python
-.venv/
-venv/
-__pycache__/
-*.py[cod]
-*$py.class
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.coverage
-coverage/
-htmlcov/
-
-# Lambda build artifacts
-infrastructure/finops-lambda/package/
-infrastructure/finops-lambda/finops-lambda.zip
-infrastructure/monitoring-agent-lambda/monitoring-agent.zip
-
-# Node / frontend
-node_modules/
-dist/
-build/
-frontend-static/
-frontend-build/
-frontend-build.tar.gz
-*.tsbuildinfo
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# Terraform state (may contain secrets)
-*.tfstate
-*.tfstate.*
-errored.tfstate
-.terraform/
+scripts/*-env.json
 
 # Local test output
 response*.json
-
-# Docker / local runtime
 *.log
-docker-compose.override.yml
 
 # OS / editor
 .DS_Store

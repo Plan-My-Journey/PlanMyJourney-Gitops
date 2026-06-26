@@ -8,7 +8,7 @@ metadata:
 spec:
   project: planmyjourney
   source:
-    repoURL: oci://cr.kgateway.dev/kgateway-dev/charts/kgateway-crds
+    repoURL: cr.kgateway.dev/kgateway-dev/charts
     chart: kgateway-crds
     targetRevision: v2.3.4
     helm:

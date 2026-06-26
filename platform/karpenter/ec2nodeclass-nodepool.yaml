@@ -4,6 +4,8 @@ metadata:
   name: default
 spec:
   amiFamily: AL2
+  amiSelectorTerms:
+    - alias: al2@latest
   role: ai-travel-prod-karpenter-node
   subnetSelectorTerms:
     - tags:
