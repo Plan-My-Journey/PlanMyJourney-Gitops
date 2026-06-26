@@ -14,8 +14,11 @@ spec:
       kind: GatewayParameters
       name: nlb-config
   listeners:
+    # Single HTTP listener on :443. The NLB terminates TLS on :443 (ACM cert via
+    # GatewayParameters ssl-cert/ssl-ports) and forwards plain HTTP to the proxy.
+    # Routes attach via sectionName: http. All public traffic uses HTTPS.
     - name: http
-      port: 80
+      port: 443
       protocol: HTTP
       allowedRoutes:
         namespaces:
