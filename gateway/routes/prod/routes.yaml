@@ -11,7 +11,9 @@ metadata:
   namespace: prod
 spec:
   parentRefs:
-    - name: api-gateway
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: api-gateway
       namespace: kgateway-system
       sectionName: http
   hostnames: ["api.invest-iq.online"]
@@ -34,7 +36,9 @@ metadata:
   namespace: prod
 spec:
   parentRefs:
-    - name: api-gateway
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: api-gateway
       namespace: kgateway-system
       sectionName: http
   hostnames: ["api.invest-iq.online"]
@@ -62,7 +66,9 @@ metadata:
   namespace: prod
 spec:
   parentRefs:
-    - name: api-gateway
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: api-gateway
       namespace: kgateway-system
       sectionName: http
   hostnames: ["api.invest-iq.online"]
@@ -80,7 +86,9 @@ metadata:
   namespace: prod
 spec:
   parentRefs:
-    - name: api-gateway
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: api-gateway
       namespace: kgateway-system
       sectionName: http
   hostnames: ["api.invest-iq.online"]
