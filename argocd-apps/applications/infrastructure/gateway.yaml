@@ -1,22 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: platform-kgateway
+  name: platform-gateway
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "-2"
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   project: planmyjourney
   source:
-    repoURL: cr.kgateway.dev/kgateway-dev/charts
-    chart: kgateway
-    targetRevision: v2.3.4
-    helm:
-      releaseName: kgateway
-      values: |
-        controller:
-          image:
-            pullPolicy: IfNotPresent
+    repoURL: https://github.com/Plan-My-Journey/PlanMyJourney-Gitops
+    targetRevision: main
+    path: gateway/base
   destination:
     server: https://kubernetes.default.svc
     namespace: kgateway-system

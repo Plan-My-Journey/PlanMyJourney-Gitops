@@ -1,0 +1,28 @@
+# ArgoCD repository registrations for OCI Helm registries.
+# Required so ArgoCD pulls charts via `helm pull oci://...` (OCI mode) instead of
+# the classic `--repo` form. Public registries — no credentials needed.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: repo-kgateway-oci
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+stringData:
+  name: kgateway
+  type: helm
+  url: cr.kgateway.dev/kgateway-dev/charts
+  enableOCI: "true"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: repo-karpenter-oci
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+stringData:
+  name: karpenter
+  type: helm
+  url: public.ecr.aws/karpenter
+  enableOCI: "true"
