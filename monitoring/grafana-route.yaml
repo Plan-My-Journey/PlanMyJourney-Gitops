@@ -1,0 +1,22 @@
+# Grafana exposed at https://grafana.invest-iq.online via the KGateway gateway
+# (NLB terminates TLS on :443). grafana service name = <release>-grafana = monitoring-grafana.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: grafana-route
+  namespace: monitoring
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: api-gateway
+      namespace: kgateway-system
+      sectionName: http
+  hostnames: ["grafana.invest-iq.online"]
+  rules:
+    - backendRefs:
+        - group: ""
+          kind: Service
+          name: monitoring-grafana
+          port: 80
+          weight: 1
