@@ -16,7 +16,7 @@ spec:
       name: api-gateway
       namespace: kgateway-system
       sectionName: http
-  hostnames: ["api.invest-iq.online"]
+  hostnames: ["api.invest-iq.online", "invest-iq.online", "www.invest-iq.online"]
   rules:
     - matches: [{ path: { type: PathPrefix, value: /api/auth } }]
       filters:
@@ -41,7 +41,7 @@ spec:
       name: api-gateway
       namespace: kgateway-system
       sectionName: http
-  hostnames: ["api.invest-iq.online"]
+  hostnames: ["api.invest-iq.online", "invest-iq.online", "www.invest-iq.online"]
   rules:
     - matches: [{ path: { type: PathPrefix, value: /api/trips } }]
       filters:
@@ -71,7 +71,7 @@ spec:
       name: api-gateway
       namespace: kgateway-system
       sectionName: http
-  hostnames: ["api.invest-iq.online"]
+  hostnames: ["api.invest-iq.online", "invest-iq.online", "www.invest-iq.online"]
   rules:
     - matches: [{ path: { type: PathPrefix, value: /api/ai } }]
       filters:
@@ -91,7 +91,7 @@ spec:
       name: api-gateway
       namespace: kgateway-system
       sectionName: http
-  hostnames: ["api.invest-iq.online"]
+  hostnames: ["api.invest-iq.online", "invest-iq.online", "www.invest-iq.online"]
   rules:
     - matches: [{ path: { type: PathPrefix, value: /api/weather } }]
       filters:
@@ -118,3 +118,24 @@ spec:
         - type: URLRewrite
           urlRewrite: { path: { type: ReplacePrefixMatch, replacePrefixMatch: /routing } }
       backendRefs: [{ name: utility-service, port: 8000, group: "", kind: Service, weight: 1 }]
+---
+# Frontend SPA served from the in-cluster pod (replaces S3/CloudFront hosting).
+# Catch-all `/` on the apex + www. The /api/* prefixes above are longer-prefix
+# matches and take precedence per Gateway API, so API calls still reach the
+# backend services; everything else falls through to the frontend nginx (SPA).
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: prod-frontend-route
+  namespace: prod
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: api-gateway
+      namespace: kgateway-system
+      sectionName: http
+  hostnames: ["invest-iq.online", "www.invest-iq.online"]
+  rules:
+    - matches: [{ path: { type: PathPrefix, value: / } }]
+      backendRefs: [{ name: frontend, port: 80, group: "", kind: Service, weight: 1 }]
