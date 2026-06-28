@@ -26,3 +26,6 @@ configMap:
     SQS_QUEUE_URL: "https://sqs.us-east-1.amazonaws.com/235270183260/ai-travel-prod-ai-jobs"
     JOBS_TABLE_NAME: "ai-travel-prod-ai-jobs"
     ASYNC_JOBS_ENABLED: "true"
+
+image:
+  tag: "v1.0.1"
