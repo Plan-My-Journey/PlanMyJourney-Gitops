@@ -21,3 +21,6 @@ podDisruptionBudget:
 
 ingress:
   enabled: false
+
+image:
+  tag: "v1.0.1"
