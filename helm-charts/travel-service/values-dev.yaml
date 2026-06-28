@@ -24,4 +24,4 @@ serviceAccount:
   annotations:
     eks.amazonaws.com/role-arn: "arn:aws:iam::235270183260:role/ai-travel-travel-service-prod"
 image:
-  tag: "4b7076a02d0e3efee4a2b1a2510cb625c74a8098"
+  tag: "916e301ebbc0fd175fed1ea9a8794a0697e92c7a"
