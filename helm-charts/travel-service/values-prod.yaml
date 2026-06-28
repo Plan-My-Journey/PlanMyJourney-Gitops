@@ -20,3 +20,6 @@ configMap:
   data:
     LOG_LEVEL: "warning"
     ENVIRONMENT: "production"
+
+image:
+  tag: "v1.0.1"
