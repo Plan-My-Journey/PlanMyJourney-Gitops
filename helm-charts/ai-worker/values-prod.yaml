@@ -4,9 +4,10 @@ configMap:
     SQS_QUEUE_URL: "https://sqs.us-east-1.amazonaws.com/235270183260/ai-travel-prod-ai-jobs"
     JOBS_TABLE_NAME: "ai-travel-prod-ai-jobs"
 
-keda:
-  maxReplicaCount: 20
-  queueLength: "3"
+autoscaling:
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
 
 serviceAccount:
   annotations:

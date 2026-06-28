@@ -1,6 +1,6 @@
 apiVersion: v2
 name: ai-worker
-description: KEDA-scaled AI async worker for Bedrock jobs via SQS
+description: HPA-scaled AI async worker for Bedrock jobs via SQS
 type: application
-version: 0.1.0
+version: 0.2.0
 appVersion: "1.0.0"

@@ -28,9 +28,3 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-  ignoreDifferences:
-    # KEDA owns the replica count (SQS-driven autoscaling)
-    - group: apps
-      kind: Deployment
-      jsonPointers:
-        - /spec/replicas

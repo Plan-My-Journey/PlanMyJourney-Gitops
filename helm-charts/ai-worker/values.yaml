@@ -1,4 +1,4 @@
-replicaCount: 0
+replicaCount: 1
 
 image:
   repository: "235270183260.dkr.ecr.us-east-1.amazonaws.com/ai-travel/ai-service"
@@ -31,6 +31,12 @@ resources:
     cpu: "2000m"
     memory: "2Gi"
 
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+
 configMap:
   enabled: true
   data:
@@ -50,15 +56,6 @@ env:
       secretKeyRef:
         name: ai-service-secrets
         key: jwt_secret_key
-
-keda:
-  enabled: true
-  minReplicaCount: 0
-  maxReplicaCount: 20
-  pollingInterval: 15
-  cooldownPeriod: 120
-  queueLength: "3"
-  awsRegion: us-east-1
 
 nodeSelector: {}
 
