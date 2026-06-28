@@ -56,10 +56,14 @@ spec:
               mountPath: /tmp
             - name: nginx-cache
               mountPath: /var/cache/nginx
+            - name: nginx-run
+              mountPath: /run
       volumes:
         - name: tmp
           emptyDir: {}
         - name: nginx-cache
+          emptyDir: {}
+        - name: nginx-run
           emptyDir: {}
       {{- with .Values.nodeSelector }}
       nodeSelector:
