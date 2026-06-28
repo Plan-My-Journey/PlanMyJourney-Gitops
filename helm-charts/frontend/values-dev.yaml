@@ -25,3 +25,6 @@ configMap:
 
 ingress:
   enabled: false
+
+image:
+  tag: "8866f58060df43001b1f86dbfc06fa3cd5a786d1"
