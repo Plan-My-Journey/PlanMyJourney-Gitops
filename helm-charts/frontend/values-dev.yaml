@@ -1,5 +1,4 @@
 replicaCount: 2
-
 resources:
   requests:
     cpu: "50m"
@@ -7,24 +6,19 @@ resources:
   limits:
     cpu: "250m"
     memory: "256Mi"
-
 autoscaling:
   enabled: true
   minReplicas: 2
   maxReplicas: 10
   targetCPUUtilizationPercentage: 60
   targetMemoryUtilizationPercentage: 70
-
 podDisruptionBudget:
   enabled: false
-
 configMap:
   enabled: true
   data:
     ENVIRONMENT: "dev"
-
 ingress:
   enabled: false
-
 image:
   tag: "8866f58060df43001b1f86dbfc06fa3cd5a786d1"
