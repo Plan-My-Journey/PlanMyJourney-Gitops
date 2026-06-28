@@ -9,11 +9,7 @@ resources:
     memory: "2Gi"
 
 autoscaling:
-  enabled: true
-  minReplicas: 2
-  maxReplicas: 20
-  targetCPUUtilizationPercentage: 60
-  targetMemoryUtilizationPercentage: 70
+  enabled: false
 
 podDisruptionBudget:
   enabled: true

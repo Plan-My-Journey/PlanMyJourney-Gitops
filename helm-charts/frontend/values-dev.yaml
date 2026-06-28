@@ -1,4 +1,4 @@
-replicaCount: 1
+replicaCount: 2
 
 resources:
   requests:
@@ -9,7 +9,11 @@ resources:
     memory: "256Mi"
 
 autoscaling:
-  enabled: false
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 60
+  targetMemoryUtilizationPercentage: 70
 
 podDisruptionBudget:
   enabled: false

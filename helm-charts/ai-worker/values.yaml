@@ -54,10 +54,10 @@ env:
 keda:
   enabled: true
   minReplicaCount: 0
-  maxReplicaCount: 10
+  maxReplicaCount: 20
   pollingInterval: 15
   cooldownPeriod: 120
-  queueLength: "5"
+  queueLength: "3"
   awsRegion: us-east-1
 
 nodeSelector: {}
