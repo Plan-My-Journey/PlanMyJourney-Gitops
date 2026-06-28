@@ -14,7 +14,11 @@ spec:
       sectionName: http
   hostnames: ["grafana.invest-iq.online"]
   rules:
-    - backendRefs:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
         - group: ""
           kind: Service
           name: monitoring-grafana
