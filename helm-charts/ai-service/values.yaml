@@ -8,7 +8,7 @@ image:
 serviceAccount:
   create: true
   annotations:
-    eks.amazonaws.com/role-arn: "arn:aws:iam::235270183260:role/ai-travel-ai-service-irsa"
+    eks.amazonaws.com/role-arn: "arn:aws:iam::235270183260:role/ai-travel-ai-service-prod"
   name: ""
 
 podAnnotations:
