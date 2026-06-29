@@ -3,10 +3,8 @@ configMap:
     ENVIRONMENT: "dev"
     SQS_QUEUE_URL: "https://sqs.us-east-1.amazonaws.com/235270183260/ai-travel-prod-ai-jobs"
     JOBS_TABLE_NAME: "ai-travel-prod-ai-jobs"
-
 serviceAccount:
   annotations:
     eks.amazonaws.com/role-arn: "arn:aws:iam::235270183260:role/ai-travel-ai-worker-prod"
-
 image:
-  tag: "b98bcc6e0021dfca03aa891e8a9fa58661bdfe93"
+  tag: "20cbe9b710d42565845c4673b8238a4ebc1b9a1e"
