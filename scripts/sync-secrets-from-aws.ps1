@@ -41,10 +41,12 @@ if (-not $rdsHost) {
   $rdsHost = (aws rds describe-db-instances --region $Region --query "DBInstances[0].Endpoint.Address" --output text)
 }
 
-# Alembic reads DATABASE_URL via ConfigParser, which treats % as interpolation syntax.
+# Each service uses its own database to avoid alembic version table conflicts.
+# user_db and travel_db must be created in the PostgreSQL instance before running this.
+# Run the create-dbs-and-fix-secrets GitHub Actions workflow if they don't exist yet.
 $encodedPassword = [uri]::EscapeDataString($rds.password) -replace '%', '%%'
-$userDbUrl = "postgresql+psycopg://$($rds.username):${encodedPassword}@${rdsHost}:5432/ai_travel_prod"
-$travelDbUrl = "postgresql+psycopg://$($rds.username):${encodedPassword}@${rdsHost}:5432/ai_travel_prod"
+$userDbUrl = "postgresql+psycopg://$($rds.username):${encodedPassword}@${rdsHost}:5432/user_db"
+$travelDbUrl = "postgresql+psycopg://$($rds.username):${encodedPassword}@${rdsHost}:5432/travel_db"
 
 $geoapify = if ($geoapifySecret.GEOAPIFY_API_KEY) { $geoapifySecret.GEOAPIFY_API_KEY } else { "REPLACE_ME" }
 
