@@ -32,4 +32,4 @@ configMap:
     BEDROCK_MAX_TOKENS: "4096"
 
 image:
-  tag: "v1.0.1"
+  tag: "20cbe9b710d42565845c4673b8238a4ebc1b9a1e"
